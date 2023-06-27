@@ -22,3 +22,8 @@ python manage.py runserver
 ```shell
 python manage.py createsuperuse
 ```
+
+## 5. Create App
+```shell
+python manage.py startapp {App 이름}
+```
