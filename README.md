@@ -8,22 +8,29 @@ Clone of the Airbnb Backend built with Django, REST Framework and Strawberry Gra
 poetry shell
 ```
 
-## 2. Migrate DB
-```shell
-python manage.py migrate
-```
-
-## 3. Run Server
+## 2. Run Server
 ```shell
 python manage.py runserver
 ```
 
-## 4. Create Super User
+## 3. Create Super User
 ```shell
 python manage.py createsuperuse
 ```
 
-## 5. Create App
+# How to create a new app
+
+## 1. Create App
 ```shell
 python manage.py startapp {App 이름}
+```
+
+## 2. Make Migration
+```shell
+python manage.py makemigrations
+```
+
+## 3. Apply Migration
+```shell
+python manage.py migrate
 ```
