@@ -1,7 +1,8 @@
 from django.db import models
+from common.models import CommonModel
 
 
-class Room(models.Model):
+class Room(CommonModel):
 
     """Room Model Definition"""
 
@@ -20,9 +21,10 @@ class Room(models.Model):
     pet_friendly = models.BooleanField(default=True)
     kind = models.CharField(max_length=20, choices=RoomKindChoices.choices)
     owner = models.ForeignKey("users.User", on_delete=models.CASCADE)
+    amenities = models.ManyToManyField("rooms.Amenity")  # 여러 개의 amenity를 가질 수 있음
 
 
-class Amenity(models.Model):
+class Amenity(CommonModel):
     """Amenity Model Definition"""
 
     name = models.CharField(max_length=150)
