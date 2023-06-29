@@ -4,11 +4,11 @@ from .models import House
 
 @admin.register(House)  # admin패널에 House라는 model을 등록
 class HouseAdmin(admin.ModelAdmin):
-    fields = (
-        "name",
-        "address",
-        ("price_per_night", "pets_allowed")
-    )  # admin 패널에서 보고 싶은 field들을 의미. 여러 개의 field를 같은 줄에 보이게 하려면 tuple로 묶으면 된다.
+    # fields = (
+    #     "name",
+    #     "address",
+    #     ("price_per_night", "pets_allowed")
+    # )  # admin 패널에서 보고 싶은 field들을 의미. 여러 개의 field를 같은 줄에 보이게 하려면 tuple로 묶으면 된다.
     list_display = (
         "name",
         "price_per_night",

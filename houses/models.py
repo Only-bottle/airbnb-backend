@@ -17,6 +17,10 @@ class House(models.Model):
         default=True,
         help_text="Does this house allow pets?"
     )  # True, False
+    owner = models.ForeignKey(
+        "users.User",
+        on_delete=models.CASCADE  # ForeignKeyField가 바라보는 값이 삭제될 때 해당 요소를 처리하는 방법을 지정. 모델 인스턴스를 같이 삭제시킨다.
+    )
 
     def __str__(self) -> str:
         return self.name
