@@ -10,6 +10,7 @@ packages = [{include = "airbnb_backend"}]
 [tool.poetry.dependencies]
 python = "^3.10"
 django = "^4.2.2"
+pillow = "^9.5.0"
 
 
 [tool.poetry.group.dev.dependencies]
