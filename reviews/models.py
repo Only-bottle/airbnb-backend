@@ -8,7 +8,7 @@ class Review(CommonModel):
 
     user = models.ForeignKey(
         "users.User",
-        on_delete=models.CASCADE,  # 유저 계정을 삭제하면 리뷰도 사라진다. (이건 개인의 차인듯?)
+        on_delete=models.CASCADE,  # 유저 계정을 삭제하면 리뷰도 사라진다. (이건 개인의 차인듯? 고민해보기)
     )
     room = models.ForeignKey(
         "rooms.Room",
