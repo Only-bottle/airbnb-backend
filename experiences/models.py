@@ -33,6 +33,12 @@ class Experience(CommonModel):
     perks = models.ManyToManyField(
         "experiences.Perk",
     )
+    category = models.ForeignKey(
+        "categories.Category",
+        null=True,  # null이 될 수 있다.
+        blank=True,  # blank가 될 수 있다.
+        on_delete=models.SET_NULL,  # category가 삭제되어도 experience는 삭제되지 않게 해야 함.
+    )
 
     def __str__(self) -> str:
         return self.name
