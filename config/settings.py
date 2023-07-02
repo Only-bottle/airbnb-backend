@@ -39,6 +39,7 @@ CUSTOM_APPS = [
     "wishlists.apps.WishlistsConfig",
     "bookings.apps.BookingsConfig",
     "medias.apps.MediasConfig",
+    "direct_messages.apps.DirectMessagesConfig",
 ]
 
 SYSTEM_APPS = [
