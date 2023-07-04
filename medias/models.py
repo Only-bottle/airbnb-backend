@@ -13,12 +13,14 @@ class Photo(CommonModel):
         on_delete=models.CASCADE,  # 방이 삭제되면 사진도 삭제되어야 함
         null=True,
         blank=True,
+        related_name="photos",
     )
     experience = models.ForeignKey(
         "experiences.Experience",
         on_delete=models.CASCADE,
         null=True,
         blank=True,
+        related_name="photos",
     )
 
     def __str__(self):
@@ -31,6 +33,7 @@ class Video(CommonModel):
     experience = models.OneToOneField(  # ForeignKey와 같지만 고유한 값이 된다. (하나의 활동엔 하나의 비디오)
         "experiences.Experience",
         on_delete=models.CASCADE,
+        related_name="videos",
     )
 
     def __str__(self):

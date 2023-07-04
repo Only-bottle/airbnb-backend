@@ -20,6 +20,7 @@ class Experience(CommonModel):
     host = models.ForeignKey(
         "users.User",
         on_delete=models.CASCADE,
+        related_name="experiences",
     )
     price = models.PositiveIntegerField()
     address = models.CharField(
@@ -32,12 +33,14 @@ class Experience(CommonModel):
     description = models.TextField()
     perks = models.ManyToManyField(
         "experiences.Perk",
+        related_name="experiences",
     )
     category = models.ForeignKey(
         "categories.Category",
         null=True,  # null이 될 수 있다.
         blank=True,  # blank가 될 수 있다.
         on_delete=models.SET_NULL,  # category가 삭제되어도 experience는 삭제되지 않게 해야 함.
+        related_name="experiences",
     )
 
     def __str__(self) -> str:
