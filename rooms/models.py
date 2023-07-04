@@ -33,6 +33,9 @@ class Room(CommonModel):
     def __str__(self) -> str:
         return self.name
 
+    # admin 패널에서도 메소드를 넣을 수도 있음. admin 패널만을 위한 것이 아니라면 model에 구현하는 게 좋음
+    def total_amenities(self):
+        return self.amenities.count()
 
 class Amenity(CommonModel):
     """Amenity Model Definition"""
