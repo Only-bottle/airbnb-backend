@@ -3,7 +3,7 @@ from .models import Room, Amenity
 
 
 @admin.action(description="Set all prices to zero")
-def reset_prices(model_admin, request, rooms):
+def reset_prices(model_admin, request, rooms):  # rooms는 query set을 의미함
     for room in rooms.all():
         room.price = 0
         room.save()
