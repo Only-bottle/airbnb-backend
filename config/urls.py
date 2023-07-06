@@ -15,10 +15,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from rooms import views
+from django.urls import path, include
 
 urlpatterns = [
     path("admin/", admin.site.urls),  # 첫 번째 arg는 유저가 이동할 url, 두 번째 arg는 유저가 해당 url로 왔을 때 장고가 실행할 함수
-    path("rooms", views.say_hello),
+    path("rooms/", include("rooms.urls")),  # 
 ]
