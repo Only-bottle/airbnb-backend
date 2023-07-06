@@ -44,6 +44,16 @@ class Room(CommonModel):
     # admin 패널에서도 메소드를 넣을 수도 있음. admin 패널만을 위한 것이 아니라면 model에 구현하는 게 좋음
     def total_amenities(self):
         return self.amenities.count()
+    
+    def rating(self):
+        count = self.reviews.count()
+        if count == 0:
+            return "No Reviews"
+        else:
+            total_rating = 0
+            for review in self.reviews.all().values("rating"):
+                total_rating += review["rating"]
+            return round(total_rating / count, 2)
 
 class Amenity(CommonModel):
     """Amenity Model Definition"""
