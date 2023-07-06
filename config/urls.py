@@ -19,6 +19,6 @@ from django.urls import path
 from rooms import views
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path("admin/", admin.site.urls),  # 첫 번째 arg는 유저가 이동할 url, 두 번째 arg는 유저가 해당 url로 왔을 때 장고가 실행할 함수
     path("rooms", views.say_hello),
 ]
