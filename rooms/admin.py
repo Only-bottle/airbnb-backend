@@ -25,6 +25,12 @@ class RoomAdmin(admin.ModelAdmin):
         "updated_at",
     )
 
+    search_fields = (  # 필드를 검색하면 기본적으로 장고에서는 해당 값을 포함하는 것들을 찾는다.
+        "name",  # 입력하는 값을 포함 (contain)
+        "^price",  # ^는 startswith를 의미함
+        "=owner__username",  # =은 동일한 값을 보여줌 (equal)
+    )
+
 
 @admin.register(Amenity)
 class AmenityAdmin(admin.ModelAdmin):
