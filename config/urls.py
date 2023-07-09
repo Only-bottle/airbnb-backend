@@ -20,4 +20,5 @@ from django.urls import path, include
 urlpatterns = [
     path("admin/", admin.site.urls),  # 첫 번째 arg는 유저가 이동할 url, 두 번째 arg는 유저가 해당 url로 왔을 때 장고가 실행할 함수
     path("rooms/", include("rooms.urls")),  # 
+    path("categories/", include("categories.urls")),
 ]
