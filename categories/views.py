@@ -14,15 +14,20 @@ def categories(request):
         return Response(serializer.data)
 
     elif request.method == "POST":
-        Category.objects.create(
-            name=request.data["name"],
-            kind=request.data["kind"],
-        )
-        return Response({"created": True})
+        # user로부터 데이터를 가져오고 싶으면 data를 CategorySerializer에게 넘겨라
+        serializer = CategorySerializer(data=request.data)
+        if serializer.is_valid():
+            return Response({"created": True})
+        else:
+            return Response(serializer.errors)
 
 
 @api_view()
 def category(request, pk):
+    """
+    Django에서 JSON으로 번역하고 싶으면 CategorySerializer에 category를 넘기고
+    
+    """
     category = Category.objects.get(pk=pk)
     serializer = CategorySerializer(category)
 
