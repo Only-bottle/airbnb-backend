@@ -17,7 +17,8 @@ def categories(request):
         # user로부터 데이터를 가져오고 싶으면 data를 CategorySerializer에게 넘겨라
         serializer = CategorySerializer(data=request.data)
         if serializer.is_valid():
-            return Response({"created": True})
+            new_category = serializer.save()
+            return Response(CategorySerializer(new_category).data)
         else:
             return Response(serializer.errors)
 
