@@ -16,8 +16,8 @@ class AmenitySerializer(serializers.ModelSerializer):
 
 class RoomDetailSerializer(serializers.ModelSerializer):
     owner = TinyUserSerializer(read_only=True)  # 읽기만 해야하는 필드
-    amenities = AmenitySerializer(many=True)
-    category = CategorySerializer()
+    amenities = AmenitySerializer(read_only=True, many=True)
+    category = CategorySerializer(read_only=True)
 
     class Meta:
         model = Room
