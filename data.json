@@ -8,5 +8,6 @@
     "description": "DRF is good!",
     "address": "123",
     "pet_friendly": true,
+    "category": 2,
     "kind": "private_room"
 }
