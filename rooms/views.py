@@ -1,3 +1,4 @@
+from django.db import transaction
 from rest_framework.views import APIView
 from rest_framework.status import HTTP_204_NO_CONTENT
 from rest_framework.response import Response
@@ -28,23 +29,23 @@ class Rooms(APIView):
                         raise ParseError("The category kind should be 'rooms'")
                 except Category.DoesNotExist:
                     raise ParseError("Category not found")
-                room = serializer.save(
-                    owner=request.user,
-                    category=category,
-                )  # 해당 serializer의 create 함수에 validated_data가 추가된다.
-                amenities = request.data.get("amenities")
-                for amenity_pk in amenities:
-                    try:
-                        amenity = Amenity.objects.get(pk=amenity_pk)
-                    except Amenity.DoesNotExist:
-                        # 잘못된 Amenity를 보낸 경우 어떻게 처리해야 할까
-                        # 1. 조용히 실패 pass 같은 방식
-                        # 2. 에러 메시지를 띄우고 room을 지워버리기
-                        room.delete()
-                        raise ParseError(f"Amenity with id {amenity_pk} not found")
-                    room.amenities.add(amenity)  # ManyToMany이기 때문에 foreign key와는 다르다.
-                serializer = RoomDetailSerializer(room)
-                return Response(serializer.data)
+                try:
+                    with transaction.atomic():  # db에 즉시 반영하지 않는다. 에러가 발생하지 않으면 db에 반영
+                        room = serializer.save(
+                            owner=request.user,
+                            category=category,
+                        )  # 해당 serializer의 create 함수에 validated_data가 추가된다.
+                        amenities = request.data.get("amenities")
+                        for amenity_pk in amenities:
+                            # 잘못된 Amenity를 보낸 경우 어떻게 처리해야 할까
+                            # 1. 조용히 실패 pass 같은 방식
+                            # 2. 에러 메시지를 띄우고 room을 지워버리기
+                            amenity = Amenity.objects.get(pk=amenity_pk)
+                            room.amenities.add(amenity)  # ManyToMany이기 때문에 foreign key와는 다르다.
+                        serializer = RoomDetailSerializer(room)
+                        return Response(serializer.data)
+                except Exception:
+                    raise ParseError("Amenity not found")
             else:
                 return Response(serializer.errors)
         else:
