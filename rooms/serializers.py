@@ -3,6 +3,7 @@ from rest_framework import serializers
 from .models import Room, Amenity
 from users.serializers import TinyUserSerializer
 from categories.serializers import CategorySerializer
+from reviews.serializers import ReviewSerializer
 
 
 class AmenitySerializer(serializers.ModelSerializer):
@@ -21,6 +22,10 @@ class RoomDetailSerializer(serializers.ModelSerializer):
     rating = serializers.SerializerMethodField()
     # 연결되어 있는 serializer 클래스에서 메소드를 호출하여 값을 가져올 수 있는 읽기 전용 필드이다.
     is_owner = serializers.SerializerMethodField()
+    reviews = ReviewSerializer(
+        read_only=True,
+        many=True,
+    )
 
     class Meta:
         model = Room

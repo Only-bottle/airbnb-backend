@@ -1,6 +1,9 @@
 from django.db import models
 from common.models import CommonModel
 
+# A-FK(B) -> 만약 A모델이 B모델에 대한 외래키를 가지고 있으면
+# B.A_set -> B는 자동으로 A_set이라는 역접근자를 가진다. A_set은 B에게 가리키고 있는 모델 A를 준다.
+# related_name으로 찾을 수 있음. room.reviews.all()
 
 class Review(CommonModel):
 
