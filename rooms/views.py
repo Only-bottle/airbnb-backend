@@ -1,5 +1,7 @@
 from django.db import transaction
 from django.conf import settings
+from django.utils import timezone  # djangodㅔ서 시간을 알아내거나 타임존에 관한 작업을 하려면 해당 라이브러리를 쓰는 게 좋음
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.views import APIView
 from rest_framework.status import HTTP_204_NO_CONTENT
 from rest_framework.response import Response
@@ -16,6 +18,8 @@ from .serializers import RoomListSerializer, RoomDetailSerializer, AmenitySerial
 from categories.models import Category
 from reviews.serializers import ReviewSerializer
 from medias.serializers import PhotoSerializer
+from bookings.models import Booking
+from bookings.serializers import PublicBookingSerializer
 
 
 class Rooms(APIView):
@@ -223,6 +227,28 @@ class RoomPhotos(APIView):
             return Response(serializer.data)
         else:
             return Response(serializer.errors)
+
+
+class RoomBookings(APIView):
+
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_object(self, pk):
+        try:
+            return Room.objects.get(pk=pk)
+        except:
+            raise NotFound
+
+    def get(self, request, pk):
+        room = self.get_object(pk)
+        now = timezone.localtime(timezone.now()).date()  # check_in 날짜가 미래인 booking을 가져와야 함
+        bookings = Booking.objects.filter(
+            room=room,
+            kind=Booking.BookingKindChoices.ROOM,
+            check_in__gt=now,
+        )
+        serializer = PublicBookingSerializer(bookings, many=True)
+        return Response(serializer.data)
 
 
 class Amenities(APIView):
