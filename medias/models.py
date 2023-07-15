@@ -4,7 +4,7 @@ from common.models import CommonModel
 
 class Photo(CommonModel):
 
-    file = models.ImageField()
+    file = models.URLField()
     description = models.CharField(
         max_length=140,
     )
@@ -29,7 +29,7 @@ class Photo(CommonModel):
 
 class Video(CommonModel):
 
-    file = models.FileField()
+    file = models.URLField()  # 파일을 클라우드에 올리고 파일의 URL을 저장하기 위함.
     experience = models.OneToOneField(  # ForeignKey와 같지만 고유한 값이 된다. (하나의 활동엔 하나의 비디오)
         "experiences.Experience",
         on_delete=models.CASCADE,
