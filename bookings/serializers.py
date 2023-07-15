@@ -28,7 +28,7 @@ class CreateRoomBookingSerializer(serializers.ModelSerializer):
         if now > value:
             raise serializers.ValidationError("Can't book in the past!")
         return value
-    
+
     def validate(self, data):  # 전체 field에 대해서 validate 할 수 있음
         if data["check_out"] <= data["check_in"]:
             raise serializers.ValidationError(
@@ -36,7 +36,6 @@ class CreateRoomBookingSerializer(serializers.ModelSerializer):
             )
         # Want: 05-10 ~ 05-20
         # Existing: 05-02 ~ 05-15
-        
         if Booking.objects.filter(
             check_in__lte=data["check_out"],  # in날짜가 out보다 작거나 같은지
             check_out__gte=data["check_in"],  # out날짜가 in보다 크거나 같은지
