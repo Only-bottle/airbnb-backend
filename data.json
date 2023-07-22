@@ -24,3 +24,13 @@
     "check_out": "2023-09-21",
     "guests": 3
 }
+
+{
+    "username": "test1",
+    "email": "test1@gmail.com",
+    "name": "병만test1",
+    "gender": "male",
+    "language": "kr",
+    "currency": "won",
+    "password": "123456"
+}
