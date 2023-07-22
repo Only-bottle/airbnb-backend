@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
+from strawberry.django.views import GraphQLView
+from .schema import schema
 
 urlpatterns = [
     path("admin/", admin.site.urls),  # 첫 번째 arg는 유저가 이동할 url, 두 번째 arg는 유저가 해당 url로 왔을 때 장고가 실행할 함수
@@ -27,4 +29,5 @@ urlpatterns = [
     path("api/v1/medias/", include("medias.urls")),
     path("api/v1/wishlists/", include("wishlists.urls")),
     path("api/v1/users/", include("users.urls")),
+    path("graphql", GraphQLView.as_view(schema=schema)),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
