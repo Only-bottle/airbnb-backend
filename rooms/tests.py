@@ -74,3 +74,66 @@ class TestAmenities(APITestCase):
 
         self.assertEqual(response.status_code, 400)
         self.assertIn("name", data)
+
+
+class TestAmenity(APITestCase):
+
+    URL = "/api/v1/rooms/amenities"
+    NAME = "Test Amenity"
+    DESC = "Test Dsc"
+    UPDATED_NAME = "UPDATE Test Amenity"
+    UPDATED_DESC = "UPDATE Test Dsc"
+
+    def setUp(self):
+        models.Amenity.objects.create(
+            name=self.NAME,
+            description=self.DESC,
+        )
+
+    def test_amenity_not_found(self):
+        response = self.client.get(f"{self.URL}/2")
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_get_amenity(self):
+        response = self.client.get(f"{self.URL}/1")
+
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertEqual(
+            data["name"],
+            self.NAME,
+        )
+        self.assertEqual(
+            data["description"],
+            self.DESC,
+        )
+
+    def test_put_amenity(self):
+        response = self.client.put(
+            f"{self.URL}/1",
+            data={
+                "name": self.UPDATED_NAME,
+                "description": self.UPDATED_DESC,
+            }
+        )
+        
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertEqual(
+            data["name"],
+            self.UPDATED_NAME,
+        )
+        self.assertEqual(
+            data["description"],
+            self.UPDATED_DESC,
+        )
+
+    def test_delete_amenity(self):
+        response = self.client.delete(f"{self.URL}/1")
+
+        self.assertEqual(response.status_code, 204)
