@@ -3,7 +3,7 @@ from django.conf import settings
 from django.utils import timezone  # djangodㅔ서 시간을 알아내거나 타임존에 관한 작업을 하려면 해당 라이브러리를 쓰는 게 좋음
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.views import APIView
-from rest_framework.status import HTTP_204_NO_CONTENT
+from rest_framework.status import HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST
 from rest_framework.response import Response
 from rest_framework.exceptions import (
     NotFound,
@@ -279,7 +279,10 @@ class Amenities(APIView):
                 AmenitySerializer(amenity).data,
             )
         else:
-            return Response(serializer.errors)
+            return Response(
+                serializer.errors,
+                status=HTTP_400_BAD_REQUEST,
+            )
 
 
 class AmenityDetail(APIView):
