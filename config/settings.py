@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 THIRD_PARTY_APPS = [
     "rest_framework",
+    "rest_framework.authtoken",
     "strawberry.django",
 ]
 
@@ -149,3 +150,11 @@ MEDIA_ROOT = "uploads"  # 실제로 유저가 올리는 이미지 등의 파일�
 MEDIA_URL = "user-uploads/"  # 웹브라우저에서 URL을 통해 저장된 이미지 파일에 접근할 때, 어떤 경로에서 해당 file을 탐색할지 지정해주는 것
 
 PAGE_SIZE = 3
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+        "config.authentication.TrustMeBroAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
+    ]
+}
