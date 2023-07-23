@@ -15,6 +15,7 @@ djangorestframework = "^3.14.0"
 strawberry-graphql = {extras = ["debug-server"], version = "^0.195.3"}
 strawberry-graphql-django = "^0.14.0"
 pyjwt = "^2.8.0"
+django-environ = "^0.10.0"
 
 
 [tool.poetry.group.dev.dependencies]
