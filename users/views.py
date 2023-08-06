@@ -6,6 +6,7 @@ from rest_framework.exceptions import ParseError, NotFound
 from rest_framework.permissions import IsAuthenticated
 import jwt
 from django.conf import settings
+import requests
 
 from users.models import User
 from . import serializers
@@ -132,5 +133,17 @@ class GithubLogIn(APIView):
 
     def post(self, request):
         code = request.data.get("code")
-        print(code)
+        access_token = requests.post(
+            f"https://github.com/login/oauth/access_token?code={code}&client_id={settings.GH_CLIENT_ID}&client_secret={settings.GH_SECRET}",
+            headers={"Accept": "application/json"},
+        )
+        access_token = access_token.json().get("access_token")
+        user_data = requests.get(
+            "https://api.github.com/user",
+            headers={
+                "Authorization": f"Bearer {access_token}",
+                "Accept": "application/json",
+            },
+        )
+        print(user_data.json())
         return Response()
