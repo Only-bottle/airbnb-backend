@@ -145,5 +145,29 @@ class GithubLogIn(APIView):
                 "Accept": "application/json",
             },
         )
-        print(user_data.json())
-        return Response()
+        user_data = user_data.json()
+        user_emails = requests.get(
+            "https://api.github.com/user/emails",
+            headers={
+                "Authorization": f"Bearer {access_token}",
+                "Accept": "application/json",
+            },
+        )
+        user_emails = user_emails.json()
+        try:
+            user = User.objects.get(email=user_emails[0]["email"])
+            login(request, user)
+            return Response(status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            user = User.objects.create(
+                username=user_data.get("login"),
+                email=user_emails[0]["email"],
+                name=user_data.get("name"),
+                avatar=user_data.get("avatar_url"),
+            )
+            user.set_unusable_password()  # password로 로그인 할 수 없기 때문에
+            user.save()
+            login(request, user)
+            return Response(status=status.HTTP_200_OK)
+        except Exception:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
