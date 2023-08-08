@@ -36,16 +36,20 @@ class RoomDetailSerializer(serializers.ModelSerializer):
         return room.rating()
 
     def get_is_owner(self, room):
-        request = self.context["request"]  # view에서 전달한 context를 확인
-        return room.owner == request.user
+        request = self.context.get("request")  # view에서 전달한 context를 확인
+        if request:
+            return room.owner == request.user
+        else:
+            return False
 
     def get_is_liked(self, room):
-        request = self.context["request"]
-        if request.user.is_authenticated:
-            return Wishlist.objects.filter(  # room을 보고 있는 유저가 소요한 wishlist를 찾는다.
-                user=request.user,
-                rooms__pk=room.pk,  # wishlist에 해당 room이 들어있는지
-            ).exists()
+        request = self.context.get("request")
+        if request:
+            if request.user.is_authenticated:
+                return Wishlist.objects.filter(  # room을 보고 있는 유저가 소요한 wishlist를 찾는다.
+                    user=request.user,
+                    rooms__pk=room.pk,  # wishlist에 해당 room이 들어있는지
+                ).exists()
         return False
 
 
