@@ -179,6 +179,7 @@ class GithubLogIn(APIView):
 class KakaoLogIn(APIView):
     def post(self, request):
         try:
+            # import ipdb; ipdb.set_trace()
             code = request.data.get("code")
             access_token = requests.post(
                 "https://kauth.kakao.com/oauth/token",
@@ -211,6 +212,53 @@ class KakaoLogIn(APIView):
                     username=profile.get("nickname"),
                     name=profile.get("nickname"),
                     avatar=profile.get("profile_image_url"),
+                )
+                user.set_unusable_password()
+                user.save()
+                login(request, user)
+                return Response(status=status.HTTP_200_OK)
+        except Exception:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class NaverLogIn(APIView):
+    def post(self, request):
+        try:
+            code = request.data.get("code")
+            state = request.data.get("state")
+            access_token = requests.post(
+                "https://nid.naver.com/oauth2.0/token",
+                headers={"Content-Type": "application/x-www-form-urlencoded"},
+                data={
+                    "grant_type": "authorization_code",
+                    "client_id": "5fupNMamPO8XKis_6OgX",
+                    "client_secret": "Q7J7qvRycT",
+                    "code": code,
+                    "state": state,
+                },
+            )
+            access_token = access_token.json().get("access_token")
+            user_data = requests.get(
+                "https://openapi.naver.com/v1/nid/me",
+                headers={
+                    "Authorization": f"Bearer {access_token}",
+                },
+            )
+            user_data = user_data.json()
+            naver_account = user_data.get("response")
+            email = naver_account.get("email")
+            name = naver_account.get("name")
+            profile = naver_account.get("profile_image")
+            try:
+                user = User.objects.get(email=email)
+                login(request, user)
+                return Response(status=status.HTTP_200_OK)
+            except User.DoesNotExist:
+                user = User.objects.create(
+                    email=email,
+                    username=name,
+                    name=name,
+                    avatar=profile,
                 )
                 user.set_unusable_password()
                 user.save()
