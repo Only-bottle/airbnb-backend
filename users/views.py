@@ -126,7 +126,10 @@ class JWTLogIn(APIView):
             )
             return Response({"token": token})
         else:
-            return Response({"error": "wrong password"})
+            return Response(
+                {"error": "wrong password"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
 
 class GithubLogIn(APIView):
