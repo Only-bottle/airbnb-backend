@@ -190,8 +190,8 @@ if DEBUG:
     CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:3000"]
 
 else:
-    CORS_ALLOWED_ORIGINS = ["https://airbnb-frontend.onrender.com"]
-    CSRF_TRUSTED_ORIGINS = ["https://airbnb-frontend.onrender.com"]
+    CORS_ALLOWED_ORIGINS = ["https://airbnb-frontend-poo2.onrender.com"]
+    CSRF_TRUSTED_ORIGINS = ["https://airbnb-frontend-poo2.onrender.com"]
 
 CORS_ALLOW_CREDENTIALS = True
 
