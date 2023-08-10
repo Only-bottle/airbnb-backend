@@ -18,6 +18,10 @@ pyjwt = "^2.8.0"
 django-environ = "^0.10.0"
 django-cors-headers = "^4.2.0"
 requests = "^2.31.0"
+dj-database-url = "^2.0.0"
+psycopg2-binary = "^2.9.7"
+whitenoise = {extras = ["brotli"], version = "^6.5.0"}
+gunicorn = "^21.2.0"
 
 
 [tool.poetry.group.dev.dependencies]
